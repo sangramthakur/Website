@@ -17,18 +17,26 @@ import {
   ArrowRight,
   TrendingUp,
   GripVertical,
+  BarChart3,
+  DollarSign,
+  Layers,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { leadService } from '../../services/leadService';
 import { LeadRecord, LeadStatus } from '../../types';
+import { CrmAnalyticsSection } from './CrmAnalyticsSection';
 
 export const MiniCrm: React.FC = () => {
   const [leads, setLeads] = useState<LeadRecord[]>([]);
   const [metrics, setMetrics] = useState(leadService.getMetrics());
-  const [viewMode, setViewMode] = useState<'pipeline' | 'table'>('pipeline');
+  const [viewMode, setViewMode] = useState<'pipeline' | 'analytics' | 'table'>('pipeline');
+  const [showVisualAnalytics, setShowVisualAnalytics] = useState(true);
   const [selectedLead, setSelectedLead] = useState<LeadRecord | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [notesInput, setNotesInput] = useState('');
+  const [dealValueInput, setDealValueInput] = useState('');
   const [draggedLeadId, setDraggedLeadId] = useState<string | null>(null);
   const [dragOverStage, setDragOverStage] = useState<LeadStatus | null>(null);
 
@@ -100,13 +108,22 @@ export const MiniCrm: React.FC = () => {
   const handleSaveNotes = () => {
     if (!selectedLead) return;
     leadService.updateLeadNotes(selectedLead.lead_id, notesInput);
+    const parsedVal = parseInt(dealValueInput.replace(/[^0-9]/g, ''), 10);
+    if (!isNaN(parsedVal)) {
+      leadService.updateLeadDealValue(selectedLead.lead_id, parsedVal);
+    }
     refreshData();
-    setSelectedLead({ ...selectedLead, notes: notesInput });
+    setSelectedLead({
+      ...selectedLead,
+      notes: notesInput,
+      deal_value: !isNaN(parsedVal) ? parsedVal : selectedLead.deal_value,
+    });
   };
 
   const handleOpenDetail = (lead: LeadRecord) => {
     setSelectedLead(lead);
     setNotesInput(lead.notes || '');
+    setDealValueInput(lead.deal_value ? lead.deal_value.toString() : '');
   };
 
   // Filtered Leads
@@ -142,23 +159,35 @@ export const MiniCrm: React.FC = () => {
         <div className="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
           <button
             onClick={() => setViewMode('pipeline')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors flex items-center gap-1.5 ${
               viewMode === 'pipeline'
-                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm font-semibold'
                 : 'text-slate-600 dark:text-slate-400'
             }`}
           >
-            Pipeline Board
+            <Layers className="w-3.5 h-3.5" />
+            <span>Pipeline Board</span>
+          </button>
+          <button
+            onClick={() => setViewMode('analytics')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors flex items-center gap-1.5 ${
+              viewMode === 'analytics'
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm font-semibold'
+                : 'text-slate-600 dark:text-slate-400'
+            }`}
+          >
+            <BarChart3 className="w-3.5 h-3.5 text-blue-500" />
+            <span>Visual Analytics</span>
           </button>
           <button
             onClick={() => setViewMode('table')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors flex items-center gap-1.5 ${
               viewMode === 'table'
-                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm font-semibold'
                 : 'text-slate-600 dark:text-slate-400'
             }`}
           >
-            Lead Table ({leads.length})
+            <span>Lead Table ({leads.length})</span>
           </button>
         </div>
       </div>
@@ -215,8 +244,8 @@ export const MiniCrm: React.FC = () => {
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center gap-3">
+      {/* FILTER & SEARCH BAR */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="relative flex-1 w-full">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
@@ -241,114 +270,155 @@ export const MiniCrm: React.FC = () => {
               </option>
             ))}
           </select>
+
+          {viewMode === 'pipeline' && (
+            <button
+              onClick={() => setShowVisualAnalytics(!showVisualAnalytics)}
+              className="px-3 py-2 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-300 transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+            >
+              <BarChart3 className="w-3.5 h-3.5 text-blue-500" />
+              <span>{showVisualAnalytics ? 'Hide Funnel Charts' : 'Show Funnel Charts'}</span>
+            </button>
+          )}
         </div>
       </div>
 
-      {/* MAIN VIEW: Pipeline (Kanban) or Table */}
-      {viewMode === 'pipeline' ? (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-            <span className="flex items-center gap-1.5 font-mono text-[11px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-              Drag and drop cards across columns to advance pipeline stages in real-time.
-            </span>
-            <span className="text-[11px] font-mono">
-              {filteredLeads.length} active leads displayed
-            </span>
-          </div>
+      {/* DEDICATED VISUAL ANALYTICS VIEW */}
+      {viewMode === 'analytics' && (
+        <div className="space-y-4">
+          <CrmAnalyticsSection leads={leads} metrics={metrics} />
+        </div>
+      )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4 overflow-x-auto pb-6">
-            {PIPELINE_STAGES.map((stage) => {
-              const stageLeads = filteredLeads.filter((l) => l.lead_status === stage);
-              const isOver = dragOverStage === stage;
+      {/* MAIN VIEW: Pipeline (Kanban) */}
+      {viewMode === 'pipeline' && (
+        <div className="space-y-6">
+          {/* Integrated Analytics Section when toggled on */}
+          {showVisualAnalytics && (
+            <div className="pb-2">
+              <CrmAnalyticsSection leads={leads} metrics={metrics} />
+            </div>
+          )}
 
-              return (
-                <div
-                  key={stage}
-                  onDragOver={(e) => handleDragOver(e, stage)}
-                  onDragEnter={(e) => handleDragOver(e, stage)}
-                  onDragLeave={(e) => handleDragLeave(e, stage)}
-                  onDrop={(e) => handleDrop(e, stage)}
-                  className={`rounded-2xl p-3 border min-w-[220px] transition-all duration-150 flex flex-col space-y-3 ${
-                    isOver
-                      ? 'bg-blue-50/90 dark:bg-blue-950/60 border-blue-400 dark:border-blue-500 ring-2 ring-blue-500/30 shadow-lg'
-                      : 'bg-slate-50/80 dark:bg-slate-900/60 border-slate-200/60 dark:border-slate-800/80'
-                  }`}
-                >
-                  <div className="flex items-center justify-between pb-2 border-b border-slate-200/60 dark:border-slate-800">
-                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                      {stage}
-                    </span>
-                    <span className="text-[10px] font-mono bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
-                      {stageLeads.length}
-                    </span>
-                  </div>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+              <span className="flex items-center gap-1.5 font-mono text-[11px]">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                Drag and drop cards across columns to advance pipeline stages in real-time.
+              </span>
+              <span className="text-[11px] font-mono">
+                {filteredLeads.length} active leads displayed
+              </span>
+            </div>
 
-                  {/* Dropzone hint when card is dragged over this column */}
-                  {isOver && draggedLeadId && (
-                    <div className="py-2 px-3 rounded-xl border-2 border-dashed border-blue-400 dark:border-blue-500 bg-blue-100/50 dark:bg-blue-900/40 text-center text-[11px] font-mono text-blue-700 dark:text-blue-300 font-semibold animate-pulse">
-                      Drop to move to {stage}
-                    </div>
-                  )}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4 overflow-x-auto pb-6">
+              {PIPELINE_STAGES.map((stage) => {
+                const stageLeads = filteredLeads.filter((l) => l.lead_status === stage);
+                const isOver = dragOverStage === stage;
+                const stageTotalVal = stageLeads.reduce((acc, curr) => acc + (curr.deal_value || 0), 0);
 
-                  <div className="space-y-2 flex-1">
-                    {stageLeads.map((lead) => {
-                      const isBeingDragged = draggedLeadId === lead.lead_id;
-
-                      return (
-                        <div
-                          key={lead.lead_id}
-                          draggable={true}
-                          onDragStart={(e) => handleDragStart(e, lead.lead_id)}
-                          onDragEnd={handleDragEnd}
-                          onClick={() => handleOpenDetail(lead)}
-                          className={`p-3 bg-white dark:bg-slate-950 border rounded-xl transition-all cursor-grab active:cursor-grabbing space-y-2 select-none group relative ${
-                            isBeingDragged
-                              ? 'opacity-40 border-dashed border-blue-500 scale-95 shadow-inner'
-                              : 'border-slate-200/80 dark:border-slate-800 hover:border-blue-500/60 hover:shadow-md'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between gap-1">
-                            <div className="flex items-center gap-1.5 min-w-0">
-                              <GripVertical className="w-3.5 h-3.5 text-slate-300 dark:text-slate-700 group-hover:text-blue-500 shrink-0 transition-colors" />
-                              <span className="font-semibold text-xs text-slate-900 dark:text-white truncate">
-                                {lead.name}
-                              </span>
-                            </div>
-                            {lead.assessment_score && (
-                              <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold shrink-0">
-                                {lead.assessment_score}%
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="text-[11px] text-slate-600 dark:text-slate-400 font-medium truncate pl-5">
-                            {lead.company}
-                          </div>
-
-                          <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pl-5">
-                            <span className="truncate">{lead.lead_source}</span>
-                            <span className="text-[9px] text-slate-400 bg-slate-100 dark:bg-slate-900 px-1 py-0.2 rounded">
-                              {lead.interest}
-                            </span>
-                          </div>
+                return (
+                  <div
+                    key={stage}
+                    onDragOver={(e) => handleDragOver(e, stage)}
+                    onDragEnter={(e) => handleDragOver(e, stage)}
+                    onDragLeave={(e) => handleDragLeave(e, stage)}
+                    onDrop={(e) => handleDrop(e, stage)}
+                    className={`rounded-2xl p-3 border min-w-[220px] transition-all duration-150 flex flex-col space-y-3 ${
+                      isOver
+                        ? 'bg-blue-50/90 dark:bg-blue-950/60 border-blue-400 dark:border-blue-500 ring-2 ring-blue-500/30 shadow-lg'
+                        : 'bg-slate-50/80 dark:bg-slate-900/60 border-slate-200/60 dark:border-slate-800/80'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-200/60 dark:border-slate-800">
+                      <div>
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                          {stage}
+                        </span>
+                        <div className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
+                          ${Math.round(stageTotalVal / 1000)}k
                         </div>
-                      );
-                    })}
+                      </div>
+                      <span className="text-[10px] font-mono bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
+                        {stageLeads.length}
+                      </span>
+                    </div>
 
-                    {stageLeads.length === 0 && !isOver && (
-                      <div className="py-6 text-center text-[11px] text-slate-400 font-mono">
-                        No records
+                    {/* Dropzone hint when card is dragged over this column */}
+                    {isOver && draggedLeadId && (
+                      <div className="py-2 px-3 rounded-xl border-2 border-dashed border-blue-400 dark:border-blue-500 bg-blue-100/50 dark:bg-blue-900/40 text-center text-[11px] font-mono text-blue-700 dark:text-blue-300 font-semibold animate-pulse">
+                        Drop to move to {stage}
                       </div>
                     )}
+
+                    <div className="space-y-2 flex-1">
+                      {stageLeads.map((lead) => {
+                        const isBeingDragged = draggedLeadId === lead.lead_id;
+
+                        return (
+                          <div
+                            key={lead.lead_id}
+                            draggable={true}
+                            onDragStart={(e) => handleDragStart(e, lead.lead_id)}
+                            onDragEnd={handleDragEnd}
+                            onClick={() => handleOpenDetail(lead)}
+                            className={`p-3 bg-white dark:bg-slate-950 border rounded-xl transition-all cursor-grab active:cursor-grabbing space-y-2 select-none group relative ${
+                              isBeingDragged
+                                ? 'opacity-40 border-dashed border-blue-500 scale-95 shadow-inner'
+                                : 'border-slate-200/80 dark:border-slate-800 hover:border-blue-500/60 hover:shadow-md'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between gap-1">
+                              <div className="flex items-center gap-1.5 min-w-0">
+                                <GripVertical className="w-3.5 h-3.5 text-slate-300 dark:text-slate-700 group-hover:text-blue-500 shrink-0 transition-colors" />
+                                <span className="font-semibold text-xs text-slate-900 dark:text-white truncate">
+                                  {lead.name}
+                                </span>
+                              </div>
+                              {lead.deal_value && (
+                                <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 shrink-0">
+                                  ${Math.round(lead.deal_value / 1000)}k
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="text-[11px] text-slate-600 dark:text-slate-400 font-medium truncate pl-5">
+                              {lead.company}
+                            </div>
+
+                            <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pl-5">
+                              <span className="truncate">{lead.lead_source}</span>
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                {lead.assessment_score && (
+                                  <span className="text-blue-600 dark:text-blue-400 font-bold">
+                                    {lead.assessment_score}%
+                                  </span>
+                                )}
+                                <span className="text-[9px] text-slate-400 bg-slate-100 dark:bg-slate-900 px-1 py-0.2 rounded">
+                                  {lead.interest}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {stageLeads.length === 0 && !isOver && (
+                        <div className="py-6 text-center text-[11px] text-slate-400 font-mono">
+                          No records
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
-      ) : (
-        /* TABLE VIEW */
+      )}
+
+      {/* TABLE VIEW */}
+      {viewMode === 'table' && (
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
@@ -357,6 +427,7 @@ export const MiniCrm: React.FC = () => {
                   <th className="px-4 py-3">Lead Contact</th>
                   <th className="px-4 py-3">Company & Role</th>
                   <th className="px-4 py-3">Interest / Need</th>
+                  <th className="px-4 py-3">Deal Value</th>
                   <th className="px-4 py-3">Source</th>
                   <th className="px-4 py-3">Stage</th>
                   <th className="px-4 py-3 text-right">Actions</th>
@@ -380,6 +451,9 @@ export const MiniCrm: React.FC = () => {
                     <td className="px-4 py-3 max-w-xs truncate">
                       <span className="font-semibold text-blue-600 dark:text-blue-400">{lead.interest}</span>
                       <p className="text-[11px] text-slate-500 truncate">{lead.business_problem}</p>
+                    </td>
+                    <td className="px-4 py-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                      ${(lead.deal_value || 0).toLocaleString()}
                     </td>
                     <td className="px-4 py-3 font-mono text-[11px] text-slate-500">
                       {lead.lead_source}
@@ -489,6 +563,25 @@ export const MiniCrm: React.FC = () => {
                   {selectedLead.interest}
                 </span>
                 {selectedLead.business_problem}
+              </div>
+            </div>
+
+            {/* Estimated Deal Value */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-mono uppercase text-slate-400">
+                Estimated Deal Value ($ USD):
+              </label>
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-mono text-xs font-bold">
+                  $
+                </span>
+                <input
+                  type="text"
+                  value={dealValueInput}
+                  onChange={(e) => setDealValueInput(e.target.value)}
+                  placeholder="e.g. 150000"
+                  className="w-full pl-8 pr-3.5 py-2 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono font-medium focus:outline-none focus:border-blue-500"
+                />
               </div>
             </div>
 

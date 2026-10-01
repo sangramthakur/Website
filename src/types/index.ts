@@ -159,6 +159,7 @@ export interface LeadRecord {
   owner?: string;
   notes?: string;
   last_contact?: string;
+  deal_value?: number;
 }
 
 export interface ComparisonItem {

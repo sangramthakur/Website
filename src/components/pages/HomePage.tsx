@@ -1,7 +1,9 @@
 import React from 'react';
 import { SeoHead } from '../common/SeoHead';
+import { LaunchAnnouncementBanner } from '../common/LaunchAnnouncementBanner';
 import { Hero } from '../home/Hero';
 import { PillarsSection } from '../home/PillarsSection';
+import { RecentProductLaunchSection } from '../home/RecentProductLaunchSection';
 import { ProblemDiscoverySection } from '../home/ProblemDiscoverySection';
 import { CapabilityExplorerSection } from '../home/CapabilityExplorerSection';
 import { AssessmentCTASection } from '../home/AssessmentCTASection';
@@ -22,8 +24,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenLeadModal 
         canonicalPath="/"
       />
 
+      <LaunchAnnouncementBanner />
       <Hero onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
       <PillarsSection onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
+      <RecentProductLaunchSection onNavigate={onNavigate} />
       <ProblemDiscoverySection onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
       <CapabilityExplorerSection onNavigate={onNavigate} />
       <AssessmentCTASection onNavigate={onNavigate} />
@@ -32,3 +36,4 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenLeadModal 
     </div>
   );
 };
+

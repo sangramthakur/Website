@@ -1,6 +1,7 @@
 import React from 'react';
-import { ArrowRight, Cpu, Network, Layers, Terminal, Sparkles, BookOpen, FileCode, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, Cpu, Network, Layers, Terminal, Sparkles, BookOpen, FileCode, ShieldCheck, ArrowUpRight, ExternalLink } from 'lucide-react';
 import { MEGA_MENU_SOLUTIONS, MEGA_MENU_INSIGHTS, MEGA_MENU_COMPANY } from '../../data/navigation';
+import { trackEvent, trackScrabytExternalClick } from '../../services/analytics';
 
 interface MegaMenuProps {
   type: 'Solutions' | 'Insights' | 'Company';
@@ -40,6 +41,44 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ type, onNavigate, onClose })
                   </div>
                 </button>
               ))}
+            </div>
+
+            {/* Featured Live AIaaS Offering: Scrabyt */}
+            <div className="mt-3 p-3 rounded-xl border border-blue-200/80 dark:border-blue-900/60 bg-gradient-to-r from-blue-50/70 via-white to-indigo-50/40 dark:from-blue-950/40 dark:via-slate-900 dark:to-slate-900 flex items-center justify-between gap-3 shadow-xs">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <span className="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                    Featured AI as a Service
+                  </span>
+                  <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                    LIVE
+                  </span>
+                </div>
+                <button
+                  onClick={() => {
+                    trackEvent('scrabyt_nav_click', { source_page: window.location.pathname });
+                    handleClick('/solutions/ai-as-a-service/scrabyt');
+                  }}
+                  className="text-xs font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 text-left block truncate cursor-pointer"
+                >
+                  Scrabyt — Clinical Intelligence OS
+                </button>
+              </div>
+
+              <a
+                href="https://www.scrabyt.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit Scrabyt website — opens in a new tab"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  trackScrabytExternalClick(window.location.pathname, 'MegaMenu_Solutions');
+                }}
+                className="px-2.5 py-1 text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:text-white hover:bg-blue-600 rounded-lg border border-blue-200 dark:border-blue-800 transition-colors flex items-center gap-1 shrink-0"
+              >
+                <span>Visit Scrabyt</span>
+                <ArrowUpRight className="w-3 h-3" />
+              </a>
             </div>
           </div>
 

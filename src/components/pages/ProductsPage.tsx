@@ -1,8 +1,9 @@
 import React from 'react';
-import { ArrowRight, Box, CheckCircle2, Shield, Sparkles } from 'lucide-react';
+import { ArrowRight, Box, CheckCircle2, Shield, Sparkles, ExternalLink } from 'lucide-react';
 import { SAAS_PRODUCTS } from '../../data/products';
 import { SeoHead } from '../common/SeoHead';
 import { Breadcrumbs } from '../common/Breadcrumbs';
+import { trackScrabytExternalClick } from '../../services/analytics';
 
 interface ProductsPageProps {
   onNavigate: (href: string) => void;
@@ -31,6 +32,25 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate, onOpenLe
         <p className="text-base text-slate-600 dark:text-slate-300">
           Data-driven products engineered for immediate operational deployment with tenant isolation, SSO/SAML, and audit logging.
         </p>
+      </div>
+
+      {/* AI as a Service Cross-Reference Note (Section 9) */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2.5">
+          <span className="w-2 h-2 rounded-full bg-blue-600" />
+          <span className="text-slate-700 dark:text-slate-300">
+            Looking for specialized clinical intelligence? <strong className="text-slate-900 dark:text-white">Scrabyt (Clinical Intelligence OS)</strong> is classified under our <strong className="text-blue-600 dark:text-blue-400">AI as a Service</strong> pillar.
+          </span>
+        </div>
+        <div className="flex items-center gap-3 shrink-0">
+          <button
+            onClick={() => onNavigate('/solutions/ai-as-a-service/scrabyt')}
+            className="text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+          >
+            <span>View Scrabyt under AI as a Service</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
 
       {/* Products Grid */}

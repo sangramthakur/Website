@@ -9,6 +9,8 @@ import { LeadChatbot } from './components/forms/LeadChatbot';
 // Page components
 import { HomePage } from './components/pages/HomePage';
 import { SolutionsHubPage, SolutionDetailPage } from './components/pages/SolutionDetailPage';
+import { AiAsAServicePage } from './components/pages/AiAsAServicePage';
+import { ScrabytDetailPage } from './components/pages/ScrabytDetailPage';
 import { ProductsPage } from './components/pages/ProductsPage';
 import { TechnologyPage } from './components/pages/TechnologyPage';
 import { HowWeWorkPage } from './components/pages/HowWeWorkPage';
@@ -71,6 +73,19 @@ export default function App() {
     // Solutions
     if (currentPath === '/solutions') {
       return <SolutionsHubPage onNavigate={navigate} onOpenLeadModal={handleOpenLeadModal} />;
+    }
+
+    // Scrabyt Overview Page (Section 7)
+    if (
+      currentPath === '/solutions/ai-as-a-service/scrabyt' ||
+      currentPath === '/ai-as-a-service/scrabyt'
+    ) {
+      return <ScrabytDetailPage onNavigate={navigate} onOpenLeadModal={handleOpenLeadModal} />;
+    }
+
+    // AI as a Service Landing Page (Section 3 & 11)
+    if (currentPath === '/solutions/ai-as-a-service' || currentPath === '/ai-as-a-service') {
+      return <AiAsAServicePage onNavigate={navigate} onOpenLeadModal={handleOpenLeadModal} />;
     }
 
     if (currentPath.startsWith('/solutions/')) {

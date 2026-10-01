@@ -7,6 +7,7 @@ import { SAAS_PRODUCTS } from '../../data/products';
 import { INSIGHT_ARTICLES } from '../../data/articles';
 import { COMPARISONS } from '../../data/comparisons';
 import { FAQ_ITEMS } from '../../data/faq';
+import { AIAAS_OFFERINGS } from '../../data/aiAsAService';
 
 interface SearchDialogProps {
   isOpen: boolean;
@@ -72,6 +73,23 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ isOpen, onClose, onN
           category: 'Solutions',
           snippet: p.description,
           href: p.ctaHref,
+        });
+      }
+    });
+
+    // Search AI as a Service Offerings (including Scrabyt)
+    AIAAS_OFFERINGS.forEach((offering) => {
+      if (
+        offering.name.toLowerCase().includes(q) ||
+        offering.category.toLowerCase().includes(q) ||
+        offering.shortDescription.toLowerCase().includes(q) ||
+        offering.capabilities.some((c) => c.toLowerCase().includes(q))
+      ) {
+        hits.push({
+          title: `${offering.name} — ${offering.category}`,
+          category: 'Solutions',
+          snippet: offering.shortDescription,
+          href: `/solutions/ai-as-a-service/${offering.slug}`,
         });
       }
     });

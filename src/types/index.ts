@@ -177,3 +177,20 @@ export interface ComparisonItem {
   bestForA: string[];
   bestForB: string[];
 }
+
+export type AIaaSOffering = {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  shortDescription: string;
+  longDescription?: string;
+  capabilities: string[];
+  status: 'live' | 'coming-soon';
+  featured: boolean;
+  external: boolean;
+  externalUrl?: string;
+  websiteLabel?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+};

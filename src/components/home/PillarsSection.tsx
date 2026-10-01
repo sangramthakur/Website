@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ArrowRight, ChevronDown, Cpu, Network, Box, Wrench, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, ChevronDown, Cpu, Network, Box, Wrench, CheckCircle2, ExternalLink, Sparkles } from 'lucide-react';
 import { COMMERCIAL_PILLARS } from '../../data/pillars';
 import { PillarId } from '../../types';
+import { trackScrabytExternalClick, trackEvent } from '../../services/analytics';
 
 interface PillarsSectionProps {
   onNavigate: (href: string) => void;
@@ -107,6 +108,32 @@ export const PillarsSection: React.FC<PillarsSectionProps> = ({ onNavigate, onOp
                     </ul>
                   </div>
 
+                  {/* Scrabyt proof-of-capability for AI as a Service (Section 14) */}
+                  {pillar.id === 'ai-as-a-service' && (
+                    <div className="mb-4 p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/70 dark:border-blue-900/50 text-[11px]">
+                      <div className="text-slate-500 dark:text-slate-400 font-mono text-[10px] uppercase font-semibold">
+                        Live AIaaS offering
+                      </div>
+                      <div className="font-bold text-slate-900 dark:text-white mt-0.5">
+                        Scrabyt — Clinical Intelligence OS
+                      </div>
+                      <a
+                        href="https://www.scrabyt.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Explore Scrabyt website — opens in a new tab"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          trackScrabytExternalClick('/', 'PillarsCard_AIaaS');
+                        }}
+                        className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline font-semibold mt-1"
+                      >
+                        <span>Explore Scrabyt</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                  )}
+
                   {/* Contextual Architecture preview (revealed on focus) */}
                   <div
                     className={`pt-4 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 transition-opacity duration-200 ${
@@ -199,6 +226,32 @@ export const PillarsSection: React.FC<PillarsSectionProps> = ({ onNavigate, onOp
                     <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-500 dark:text-slate-400 font-mono text-[11px]">
                       {pillar.architectureHighlight}
                     </div>
+
+                    {/* Scrabyt proof for mobile */}
+                    {pillar.id === 'ai-as-a-service' && (
+                      <div className="p-3 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/70 dark:border-blue-900/50 text-xs">
+                        <div className="text-slate-500 dark:text-slate-400 font-mono text-[10px] uppercase">
+                          Live Offering:
+                        </div>
+                        <div className="font-semibold text-slate-900 dark:text-white mt-0.5">
+                          Scrabyt — Clinical Intelligence OS
+                        </div>
+                        <a
+                          href="https://www.scrabyt.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Explore Scrabyt website — opens in a new tab"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            trackScrabytExternalClick('/', 'PillarsAccordion_AIaaS');
+                          }}
+                          className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 font-semibold mt-1.5"
+                        >
+                          <span>Explore Scrabyt</span>
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    )}
 
                     <button
                       onClick={() => handleCtaClick(pillar)}

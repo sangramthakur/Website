@@ -41,6 +41,14 @@ export const MEGA_MENU_SOLUTIONS = {
       kicker: 'Platform Pillar 04',
     },
   ],
+  featuredAiaas: {
+    title: 'Scrabyt',
+    subtitle: 'Clinical Intelligence OS',
+    status: 'LIVE',
+    description: 'AI-powered clinical intelligence connecting conversations with documentation, prescriptions, and billing workflows.',
+    href: '/solutions/ai-as-a-service/scrabyt',
+    externalUrl: 'https://www.scrabyt.com/',
+  },
   customEngineering: [
     { title: 'AI Agent Development', href: '/solutions/custom-ai-development/ai-agent-development' },
     { title: 'Enterprise RAG Systems', href: '/solutions/custom-ai-development/enterprise-rag' },

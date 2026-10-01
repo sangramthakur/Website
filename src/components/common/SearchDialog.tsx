@@ -166,6 +166,16 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ isOpen, onClose, onN
       }
     });
 
+    // CRM Lead Management System
+    if ('crm'.includes(q) || 'leads'.includes(q) || 'pipeline'.includes(q) || 'admin'.includes(q)) {
+      hits.push({
+        title: 'Lead Management Mini CRM',
+        category: 'Company',
+        snippet: 'Internal pipeline dashboard to inspect and manage inbound customer leads and consultation requests.',
+        href: '/crm',
+      });
+    }
+
     setResults(hits.slice(0, 8));
   }, [query]);
 

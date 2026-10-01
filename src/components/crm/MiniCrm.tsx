@@ -16,6 +16,7 @@ import {
   Sparkles,
   ArrowRight,
   TrendingUp,
+  GripVertical,
 } from 'lucide-react';
 import { leadService } from '../../services/leadService';
 import { LeadRecord, LeadStatus } from '../../types';
@@ -28,6 +29,8 @@ export const MiniCrm: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [notesInput, setNotesInput] = useState('');
+  const [draggedLeadId, setDraggedLeadId] = useState<string | null>(null);
+  const [dragOverStage, setDragOverStage] = useState<LeadStatus | null>(null);
 
   const PIPELINE_STAGES: LeadStatus[] = [
     'New',
@@ -55,6 +58,43 @@ export const MiniCrm: React.FC = () => {
     if (selectedLead && selectedLead.lead_id === leadId) {
       setSelectedLead({ ...selectedLead, lead_status: nextStatus });
     }
+  };
+
+  // Drag and Drop Event Handlers
+  const handleDragStart = (e: React.DragEvent, leadId: string) => {
+    e.dataTransfer.setData('text/plain', leadId);
+    e.dataTransfer.effectAllowed = 'move';
+    setDraggedLeadId(leadId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedLeadId(null);
+    setDragOverStage(null);
+  };
+
+  const handleDragOver = (e: React.DragEvent, stage: LeadStatus) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragOverStage !== stage) {
+      setDragOverStage(stage);
+    }
+  };
+
+  const handleDragLeave = (e: React.DragEvent, stage: LeadStatus) => {
+    if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+    if (dragOverStage === stage) {
+      setDragOverStage(null);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, targetStage: LeadStatus) => {
+    e.preventDefault();
+    const leadId = e.dataTransfer.getData('text/plain') || draggedLeadId;
+    if (leadId) {
+      handleStatusChange(leadId, targetStage);
+    }
+    setDraggedLeadId(null);
+    setDragOverStage(null);
   };
 
   const handleSaveNotes = () => {
@@ -206,61 +246,106 @@ export const MiniCrm: React.FC = () => {
 
       {/* MAIN VIEW: Pipeline (Kanban) or Table */}
       {viewMode === 'pipeline' ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4 overflow-x-auto pb-6">
-          {PIPELINE_STAGES.map((stage) => {
-            const stageLeads = filteredLeads.filter((l) => l.lead_status === stage);
+        <div className="space-y-3">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+            <span className="flex items-center gap-1.5 font-mono text-[11px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+              Drag and drop cards across columns to advance pipeline stages in real-time.
+            </span>
+            <span className="text-[11px] font-mono">
+              {filteredLeads.length} active leads displayed
+            </span>
+          </div>
 
-            return (
-              <div
-                key={stage}
-                className="bg-slate-50/80 dark:bg-slate-900/60 rounded-2xl p-3 border border-slate-200/60 dark:border-slate-800/80 min-w-[210px] space-y-3"
-              >
-                <div className="flex items-center justify-between pb-2 border-b border-slate-200/60 dark:border-slate-800">
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                    {stage}
-                  </span>
-                  <span className="text-[10px] font-mono bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
-                    {stageLeads.length}
-                  </span>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-7 gap-4 overflow-x-auto pb-6">
+            {PIPELINE_STAGES.map((stage) => {
+              const stageLeads = filteredLeads.filter((l) => l.lead_status === stage);
+              const isOver = dragOverStage === stage;
 
-                <div className="space-y-2">
-                  {stageLeads.map((lead) => (
-                    <div
-                      key={lead.lead_id}
-                      onClick={() => handleOpenDetail(lead)}
-                      className="p-3 bg-white dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800 rounded-xl hover:border-blue-500/60 hover:shadow-md transition-all cursor-pointer space-y-2"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-xs text-slate-900 dark:text-white truncate">
-                          {lead.name}
-                        </span>
-                        {lead.assessment_score && (
-                          <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold">
-                            {lead.assessment_score}%
-                          </span>
-                        )}
-                      </div>
+              return (
+                <div
+                  key={stage}
+                  onDragOver={(e) => handleDragOver(e, stage)}
+                  onDragEnter={(e) => handleDragOver(e, stage)}
+                  onDragLeave={(e) => handleDragLeave(e, stage)}
+                  onDrop={(e) => handleDrop(e, stage)}
+                  className={`rounded-2xl p-3 border min-w-[220px] transition-all duration-150 flex flex-col space-y-3 ${
+                    isOver
+                      ? 'bg-blue-50/90 dark:bg-blue-950/60 border-blue-400 dark:border-blue-500 ring-2 ring-blue-500/30 shadow-lg'
+                      : 'bg-slate-50/80 dark:bg-slate-900/60 border-slate-200/60 dark:border-slate-800/80'
+                  }`}
+                >
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-200/60 dark:border-slate-800">
+                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                      {stage}
+                    </span>
+                    <span className="text-[10px] font-mono bg-white dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">
+                      {stageLeads.length}
+                    </span>
+                  </div>
 
-                      <div className="text-[11px] text-slate-600 dark:text-slate-400 font-medium truncate">
-                        {lead.company}
-                      </div>
-
-                      <div className="text-[10px] font-mono text-slate-400 truncate">
-                        Source: {lead.lead_source}
-                      </div>
-                    </div>
-                  ))}
-
-                  {stageLeads.length === 0 && (
-                    <div className="py-6 text-center text-[11px] text-slate-400 font-mono">
-                      No records
+                  {/* Dropzone hint when card is dragged over this column */}
+                  {isOver && draggedLeadId && (
+                    <div className="py-2 px-3 rounded-xl border-2 border-dashed border-blue-400 dark:border-blue-500 bg-blue-100/50 dark:bg-blue-900/40 text-center text-[11px] font-mono text-blue-700 dark:text-blue-300 font-semibold animate-pulse">
+                      Drop to move to {stage}
                     </div>
                   )}
+
+                  <div className="space-y-2 flex-1">
+                    {stageLeads.map((lead) => {
+                      const isBeingDragged = draggedLeadId === lead.lead_id;
+
+                      return (
+                        <div
+                          key={lead.lead_id}
+                          draggable={true}
+                          onDragStart={(e) => handleDragStart(e, lead.lead_id)}
+                          onDragEnd={handleDragEnd}
+                          onClick={() => handleOpenDetail(lead)}
+                          className={`p-3 bg-white dark:bg-slate-950 border rounded-xl transition-all cursor-grab active:cursor-grabbing space-y-2 select-none group relative ${
+                            isBeingDragged
+                              ? 'opacity-40 border-dashed border-blue-500 scale-95 shadow-inner'
+                              : 'border-slate-200/80 dark:border-slate-800 hover:border-blue-500/60 hover:shadow-md'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-1">
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <GripVertical className="w-3.5 h-3.5 text-slate-300 dark:text-slate-700 group-hover:text-blue-500 shrink-0 transition-colors" />
+                              <span className="font-semibold text-xs text-slate-900 dark:text-white truncate">
+                                {lead.name}
+                              </span>
+                            </div>
+                            {lead.assessment_score && (
+                              <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 font-bold shrink-0">
+                                {lead.assessment_score}%
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="text-[11px] text-slate-600 dark:text-slate-400 font-medium truncate pl-5">
+                            {lead.company}
+                          </div>
+
+                          <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pl-5">
+                            <span className="truncate">{lead.lead_source}</span>
+                            <span className="text-[9px] text-slate-400 bg-slate-100 dark:bg-slate-900 px-1 py-0.2 rounded">
+                              {lead.interest}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {stageLeads.length === 0 && !isOver && (
+                      <div className="py-6 text-center text-[11px] text-slate-400 font-mono">
+                        No records
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       ) : (
         /* TABLE VIEW */

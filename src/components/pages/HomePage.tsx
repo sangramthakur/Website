@@ -4,6 +4,7 @@ import { LaunchAnnouncementBanner } from '../common/LaunchAnnouncementBanner';
 import { Hero } from '../home/Hero';
 import { PillarsSection } from '../home/PillarsSection';
 import { RecentProductLaunchSection } from '../home/RecentProductLaunchSection';
+import { HomepageAiAsAServiceSection } from '../home/HomepageAiAsAServiceSection';
 import { ProblemDiscoverySection } from '../home/ProblemDiscoverySection';
 import { CapabilityExplorerSection } from '../home/CapabilityExplorerSection';
 import { AssessmentCTASection } from '../home/AssessmentCTASection';
@@ -28,6 +29,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenLeadModal 
       <Hero onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
       <PillarsSection onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
       <RecentProductLaunchSection onNavigate={onNavigate} />
+      <HomepageAiAsAServiceSection onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
       <ProblemDiscoverySection onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
       <CapabilityExplorerSection onNavigate={onNavigate} />
       <AssessmentCTASection onNavigate={onNavigate} />

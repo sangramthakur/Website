@@ -1,0 +1,68 @@
+import { JobPosting } from '../types';
+
+export const JOB_POSTINGS: JobPosting[] = [
+  {
+    id: 'job-01',
+    title: 'Staff Distributed Systems Engineer (Inference Infrastructure)',
+    department: 'Distributed Systems',
+    location: 'San Francisco, CA / London / Remote',
+    workModel: 'Remote-first',
+    employmentType: 'Full-time',
+    description: 'Lead the architecture of our low-latency model routing gateway, GPU memory virtualization, and semantic caching cluster powering high-throughput enterprise inference workloads.',
+    requirements: [
+      '6+ years architecting high-throughput distributed backends in Rust, Go, or C++',
+      'Deep understanding of Linux network internals, zero-copy IPC, and GPU memory topologies',
+      'Experience running Kubernetes clusters serving millions of token-per-second workloads',
+      'Commitment to deterministic zero-downtime deployments and microsecond-level p99 latency tuning',
+    ],
+    publishedStatus: 'Open',
+  },
+  {
+    id: 'job-02',
+    title: 'Senior AI Agent Architect',
+    department: 'AI Research & Engineering',
+    location: 'San Francisco, CA / New York / Remote',
+    workModel: 'Remote-first',
+    employmentType: 'Full-time',
+    description: 'Design and benchmark stateful autonomous agent execution loops, dynamic graph decomposition frameworks, and sandboxed tool-calling environments for enterprise workflow automation.',
+    requirements: [
+      '4+ years building production applications on LLMs, agent frameworks, or compiler/state-machine runtimes',
+      'Extensive hands-on experience with LangGraph, Actor models, and cyclical execution topologies',
+      'Familiarity with AST-level code sandboxing, deterministic rollback patterns, and human-in-the-loop gating',
+      'Track record of publishing or shipping verifiable multi-step reasoning systems',
+    ],
+    publishedStatus: 'Open',
+  },
+  {
+    id: 'job-03',
+    title: 'Lead Solutions Architect (Enterprise AI)',
+    department: 'Product & Solutions',
+    location: 'Remote (Americas / EMEA)',
+    workModel: 'Remote-first',
+    employmentType: 'Full-time',
+    description: 'Partner with enterprise CTOs and VP of Engineering to design production AI architectures, conduct feasibility assessments, and oversee technical implementations from discovery to scale.',
+    requirements: [
+      '7+ years in enterprise software architecture, technical consulting, or engineering leadership',
+      'Demonstrated expertise in enterprise data architectures, hybrid RAG, vector search, and cloud security',
+      'Ability to articulate complex distributed systems trade-offs clearly to both executive and engineering audiences',
+      'Hands-on experience architecting SOC2, HIPAA, and ISO-compliant cloud solutions',
+    ],
+    publishedStatus: 'Open',
+  },
+  {
+    id: 'job-04',
+    title: 'Security & AI Governance Engineer',
+    department: 'Security & Governance',
+    location: 'Remote',
+    workModel: 'Remote-first',
+    employmentType: 'Full-time',
+    description: 'Build real-time pre-inference inspection firewalls, prompt injection defense engines, and automated PII anonymization pipelines across multi-tenant inference services.',
+    requirements: [
+      '5+ years in application security, red teaming, or infrastructure vulnerability research',
+      'Direct expertise in adversarial machine learning, indirect prompt injection mitigations, and model extraction defenses',
+      'Strong proficiency in Python, Rust, and modern cloud IAM architectures',
+      'Familiarity with emerging international AI compliance standards (EU AI Act, NIST AI RMF)',
+    ],
+    publishedStatus: 'Interviewing',
+  },
+];

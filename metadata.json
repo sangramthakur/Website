@@ -1,0 +1,6 @@
+{
+  "name": "Enterprise AI Systems Platform",
+  "description": "Enterprise-grade AI infrastructure, autonomous agents, AI as a Service, and consulting solutions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, ChevronRight, Sparkles, Shield, Cpu, ExternalLink } from 'lucide-react';
-import { Hero3DScene } from './Hero3DScene';
+import { HeroVideoPlaceholder } from './HeroVideoPlaceholder';
 
 interface HeroProps {
   onNavigate: (href: string) => void;
@@ -115,9 +115,11 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenLeadModal }) => {
             </div>
           </div>
 
-          {/* Right 3D Visual Centerpiece */}
-          <div className="lg:col-span-6 relative">
-            <Hero3DScene />
+          {/* Right Column: Platform Video Walkthrough Placeholder */}
+          <div className="lg:col-span-6 relative flex items-center justify-center">
+            <HeroVideoPlaceholder
+              onOpenConsultation={() => onOpenLeadModal('Hero Video Walkthrough')}
+            />
           </div>
         </div>
       </div>

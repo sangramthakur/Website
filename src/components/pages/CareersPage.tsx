@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Briefcase, MapPin, Clock, ArrowRight, CheckCircle2, Send, Check } from 'lucide-react';
-import { JOB_POSTINGS } from '../../data/jobs';
+import { cmsDataService } from '../../services/cmsDataService';
 import { SeoHead } from '../common/SeoHead';
 import { Breadcrumbs } from '../common/Breadcrumbs';
 import { leadService } from '../../services/leadService';
@@ -10,6 +10,7 @@ interface CareersPageProps {
 }
 
 export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
+  const jobs = cmsDataService.getJobs();
   const [profileSubmitted, setProfileSubmitted] = useState(false);
   const [profileData, setProfileData] = useState({
     name: '',
@@ -61,11 +62,11 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
       {/* Open Positions List */}
       <div className="space-y-6">
         <div className="text-xs font-mono uppercase text-slate-400 tracking-wider">
-          Open Technical Positions ({JOB_POSTINGS.length})
+          Open Technical Positions ({jobs.length})
         </div>
 
         <div className="grid grid-cols-1 gap-6">
-          {JOB_POSTINGS.map((job) => (
+          {jobs.map((job) => (
             <div
               key={job.id}
               className="p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-5"

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Box, CheckCircle2, Shield, Sparkles, ExternalLink } from 'lucide-react';
-import { SAAS_PRODUCTS } from '../../data/products';
+import { cmsDataService } from '../../services/cmsDataService';
 import { SeoHead } from '../common/SeoHead';
 import { Breadcrumbs } from '../common/Breadcrumbs';
 import { trackScrabytExternalClick } from '../../services/analytics';
@@ -11,6 +11,7 @@ interface ProductsPageProps {
 }
 
 export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate, onOpenLeadModal }) => {
+  const products = cmsDataService.getProducts();
   return (
     <div className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       <SeoHead
@@ -55,7 +56,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate, onOpenLe
 
       {/* Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {SAAS_PRODUCTS.map((product) => (
+        {products.map((product) => (
           <div
             key={product.id}
             className="p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between shadow-sm hover:border-blue-500/60 transition-all"

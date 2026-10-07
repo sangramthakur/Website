@@ -1,5 +1,6 @@
 import React from 'react';
-import { Shield, Lock, Server, Cpu, Database, FileCheck, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Shield, Lock, Server, Cpu, Database, FileCheck, CheckCircle2, AlertCircle, ArrowRight, Layers } from 'lucide-react';
+import { cmsDataService } from '../../services/cmsDataService';
 import { SeoHead } from '../common/SeoHead';
 import { Breadcrumbs } from '../common/Breadcrumbs';
 
@@ -9,6 +10,7 @@ interface TechnologyPageProps {
 }
 
 export const TechnologyPage: React.FC<TechnologyPageProps> = ({ onNavigate, onOpenLeadModal }) => {
+  const capabilities = cmsDataService.getCapabilities();
   const sections = [
     {
       title: 'Infrastructure & Serving Topology',
@@ -105,6 +107,72 @@ export const TechnologyPage: React.FC<TechnologyPageProps> = ({ onNavigate, onOp
             </ul>
           </div>
         ))}
+      </div>
+
+      {/* Production Technical Capabilities & Technology Stack (Managed in CMS) */}
+      <div className="space-y-6 pt-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-mono text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">
+              <Layers className="w-3.5 h-3.5" />
+              <span>Full-Stack Engineering Matrix</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+              Production Technical Capabilities
+            </h2>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm">
+            Core execution primitives and runtime stacks deployed across client environments.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {capabilities.map((cap) => (
+            <div
+              key={cap.id}
+              className="p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between hover:border-blue-500/50 transition-colors"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider">
+                    {cap.id}
+                  </span>
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white">
+                  {cap.title}
+                </h3>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
+                  {cap.summary}
+                </p>
+                <div className="space-y-1.5 pt-2">
+                  <span className="text-[10px] font-mono uppercase text-slate-400">Stack & Runtime:</span>
+                  <div className="flex flex-wrap gap-1">
+                    {cap.technicalStack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono text-[10px]"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {cap.route && (
+                <div className="pt-4 mt-3 border-t border-slate-100 dark:border-slate-800">
+                  <button
+                    onClick={() => onNavigate(cap.route!)}
+                    className="text-xs text-blue-600 dark:text-blue-400 font-semibold flex items-center gap-1 hover:underline cursor-pointer"
+                  >
+                    <span>View Architecture</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Compliance Information Placeholder as specified in Section 34 */}

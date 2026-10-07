@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Check, X, Scale, ChevronRight } from 'lucide-react';
-import { COMPARISONS } from '../../data/comparisons';
+import { cmsDataService } from '../../services/cmsDataService';
 import { SeoHead } from '../common/SeoHead';
 import { Breadcrumbs } from '../common/Breadcrumbs';
 
@@ -10,9 +10,10 @@ interface ComparisonsPageProps {
 }
 
 export const ComparisonsPage: React.FC<ComparisonsPageProps> = ({ onNavigate, onOpenLeadModal }) => {
-  const [selectedSlug, setSelectedSlug] = useState<string>(COMPARISONS[0].slug);
+  const comparisons = cmsDataService.getComparisons();
+  const [selectedSlug, setSelectedSlug] = useState<string>(comparisons[0]?.slug || 'ai-agents-vs-traditional-automation');
 
-  const activeComparison = COMPARISONS.find((c) => c.slug === selectedSlug) || COMPARISONS[0];
+  const activeComparison = comparisons.find((c) => c.slug === selectedSlug) || comparisons[0];
 
   return (
     <div className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -40,7 +41,7 @@ export const ComparisonsPage: React.FC<ComparisonsPageProps> = ({ onNavigate, on
 
       {/* Selector Tabs */}
       <div className="flex flex-wrap gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
-        {COMPARISONS.map((comp) => (
+        {comparisons.map((comp) => (
           <button
             key={comp.slug}
             onClick={() => setSelectedSlug(comp.slug)}

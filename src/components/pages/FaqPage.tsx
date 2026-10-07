@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronDown, HelpCircle, Search } from 'lucide-react';
-import { FAQ_ITEMS } from '../../data/faq';
+import { ChevronDown, HelpCircle, Search, Edit3 } from 'lucide-react';
+import { cmsDataService } from '../../services/cmsDataService';
 import { SeoHead } from '../common/SeoHead';
 import { Breadcrumbs } from '../common/Breadcrumbs';
 
@@ -13,6 +13,8 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onNavigate, onOpenLeadModal })
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [openIndices, setOpenIndices] = useState<number[]>([0, 1]);
+
+  const faqs = cmsDataService.getFaqs();
 
   const categories = [
     'All',
@@ -36,7 +38,7 @@ export const FaqPage: React.FC<FaqPageProps> = ({ onNavigate, onOpenLeadModal })
     }
   };
 
-  const filteredFaqs = FAQ_ITEMS.filter((item) => {
+  const filteredFaqs = faqs.filter((item) => {
     const matchCat = selectedCategory === 'All' || item.category === selectedCategory;
     const matchSearch =
       !searchQuery ||

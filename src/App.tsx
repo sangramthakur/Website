@@ -25,6 +25,7 @@ import { ContactPage } from './components/pages/ContactPage';
 import { FaqPage } from './components/pages/FaqPage';
 import { LegalPage } from './components/pages/LegalPage';
 import { MiniCrm } from './components/crm/MiniCrm';
+import { CsmPortal } from './components/cms/CsmPortal';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>('/');
@@ -170,6 +171,17 @@ export default function App() {
     // Mini CRM Internal Route
     if (currentPath === '/crm' || currentPath === '/admin/crm') {
       return <MiniCrm />;
+    }
+
+    // CSM / CMS Portal (SEO & GEO Blog Studio)
+    if (
+      currentPath === '/cms' ||
+      currentPath === '/csm' ||
+      currentPath === '/geo-studio' ||
+      currentPath === '/admin/cms' ||
+      currentPath === '/csm-portal'
+    ) {
+      return <CsmPortal onNavigate={navigate} />;
     }
 
     // Default Fallback: Home

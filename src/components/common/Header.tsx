@@ -224,6 +224,15 @@ export const Header: React.FC<HeaderProps> = ({
             >
               Internal CRM Workspace →
             </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onNavigate('/cms');
+              }}
+              className="w-full text-left px-3 py-2 text-xs font-mono text-slate-400 dark:text-slate-500 cursor-pointer"
+            >
+              GEO & SEO Studio (CMS) →
+            </button>
           </div>
 
           <div className="pt-2">

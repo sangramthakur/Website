@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowRight, BookOpen, Clock, Tag, User, Search, Filter } from 'lucide-react';
-import { INSIGHT_ARTICLES } from '../../data/articles';
+import { ArrowRight, BookOpen, Clock, Tag, User, Search, Filter, Sparkles, HelpCircle, Edit3, Bot } from 'lucide-react';
+import { cmsArticleService } from '../../services/cmsArticleService';
 import { SeoHead } from '../common/SeoHead';
 import { Breadcrumbs } from '../common/Breadcrumbs';
 
@@ -12,10 +12,19 @@ export const InsightsPage: React.FC<InsightsPageProps> = ({ onNavigate }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedStage, setSelectedStage] = useState<string>('All');
 
-  const categories = ['All', 'AI Agents', 'AI as a Service', 'Enterprise RAG', 'Governance'];
+  const articles = cmsArticleService.getArticles();
+
+  const categories = [
+    'All',
+    'Generative Engine Optimization (GEO)',
+    'AI Agents',
+    'AI as a Service',
+    'Enterprise RAG',
+    'Governance',
+  ];
   const buyerStages = ['All', 'Learn', 'Evaluate', 'Compare', 'Implement'];
 
-  const filteredArticles = INSIGHT_ARTICLES.filter((art) => {
+  const filteredArticles = articles.filter((art) => {
     const matchCat = selectedCategory === 'All' || art.category === selectedCategory;
     const matchStage = selectedStage === 'All' || art.buyerStage === selectedStage;
     return matchCat && matchStage;
@@ -139,13 +148,13 @@ export const ArticleDetailPage: React.FC<{
   slug: string;
   onNavigate: (href: string) => void;
 }> = ({ slug, onNavigate }) => {
-  const article = INSIGHT_ARTICLES.find((a) => a.slug === slug) || INSIGHT_ARTICLES[0];
+  const article = cmsArticleService.getArticleBySlug(slug) || cmsArticleService.getArticles()[0];
 
   return (
     <div className="py-12 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       <SeoHead
-        title={article.seoTitle}
-        description={article.seoDescription}
+        title={article.seoTitle || article.title}
+        description={article.seoDescription || article.excerpt}
         canonicalPath={`/insights/${article.slug}`}
         type="article"
       />
@@ -161,14 +170,24 @@ export const ArticleDetailPage: React.FC<{
 
       {/* Article Header */}
       <div className="space-y-4 pb-6 border-b border-slate-200 dark:border-slate-800">
-        <div className="flex items-center gap-2 text-xs font-mono text-slate-500">
-          <span className="font-semibold text-blue-600 dark:text-blue-400">{article.category}</span>
-          <span>·</span>
-          <span>{article.buyerStage} Phase</span>
-          <span>·</span>
-          <span>Published {article.publicationDate}</span>
-          <span>·</span>
-          <span>{article.readTime}</span>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-500">
+            <span className="font-semibold text-blue-600 dark:text-blue-400">{article.category}</span>
+            <span>·</span>
+            <span>{article.buyerStage} Phase</span>
+            <span>·</span>
+            <span>Published {article.publicationDate}</span>
+            <span>·</span>
+            <span>{article.readTime}</span>
+          </div>
+
+          <button
+            onClick={() => onNavigate('/cms')}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-blue-950/60 text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 font-mono text-[10px] transition-colors cursor-pointer"
+          >
+            <Bot className="w-3 h-3 text-blue-500" />
+            <span>Open in GEO Studio</span>
+          </button>
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
@@ -186,23 +205,66 @@ export const ArticleDetailPage: React.FC<{
         </div>
       </div>
 
+      {/* GEO Direct Answer Block (Extractable answer for generative search engines) */}
+      {article.directAnswerSnippet && (
+        <div className="p-5 sm:p-6 rounded-2xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 space-y-2">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-blue-700 dark:text-blue-400 font-bold">
+            <Sparkles className="w-4 h-4" />
+            <span>Direct Answer Summary (AI Overview / Citation Extract)</span>
+          </div>
+          <p className="text-sm sm:text-base font-medium text-slate-900 dark:text-slate-100 leading-relaxed">
+            {article.directAnswerSnippet}
+          </p>
+        </div>
+      )}
+
+      {/* Empirical Key Takeaways if available */}
+      {article.keyTakeaways && article.keyTakeaways.length > 0 && (
+        <div className="p-5 sm:p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-3">
+          <div className="text-xs font-mono uppercase tracking-wider text-slate-500 font-semibold">
+            Key Architectural Takeaways & Facts
+          </div>
+          <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+            {article.keyTakeaways.map((point, i) => (
+              <li key={i} className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* Article Body */}
       <div className="prose dark:prose-invert max-w-none space-y-6 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
         {article.body.map((para, i) => (
           <p key={i}>{para}</p>
         ))}
-
-        <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3 font-mono text-xs">
-          <div className="text-blue-600 dark:text-blue-400 font-bold uppercase">
-            Platform Reference Architecture Takeaway
-          </div>
-          <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-sans text-xs">
-            When scaling beyond preliminary prototyping, decouple tool invocation from model context windows. State persistence and deterministic policy verification are the two vital components separating brittle scripts from reliable production systems.
-          </p>
-        </div>
       </div>
 
-      {/* Related Solution Pillars (Strong internal-link architecture as required in Section 25) */}
+      {/* FAQ Schema Accordions if present */}
+      {article.faqItems && article.faqItems.length > 0 && (
+        <div className="p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-slate-500 font-semibold">
+            <HelpCircle className="w-4 h-4 text-blue-500" />
+            <span>Frequently Asked Questions</span>
+          </div>
+          <div className="space-y-3">
+            {article.faqItems.map((faq, i) => (
+              <div key={i} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 space-y-1.5">
+                <div className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                  {faq.question}
+                </div>
+                <div className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  {faq.answer}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Related Solution Pillars */}
       <div className="p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
         <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase font-mono tracking-wider">
           Related Commercial Solutions

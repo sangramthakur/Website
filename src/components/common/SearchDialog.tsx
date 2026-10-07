@@ -176,6 +176,25 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ isOpen, onClose, onN
       });
     }
 
+    // CMS / CSM GEO & SEO Studio Portal
+    if (
+      'cms'.includes(q) ||
+      'csm'.includes(q) ||
+      'geo'.includes(q) ||
+      'llmo'.includes(q) ||
+      'blog'.includes(q) ||
+      'writing'.includes(q) ||
+      'seo'.includes(q) ||
+      'perplexity'.includes(q)
+    ) {
+      hits.push({
+        title: 'GEO & SEO Blog Studio (CSM Portal)',
+        category: 'Insights',
+        snippet: 'Generative Engine Optimization (GEO / LLMO) content studio for engineering articles cited by Perplexity, ChatGPT Search, and Google AI Overviews.',
+        href: '/cms',
+      });
+    }
+
     setResults(hits.slice(0, 8));
   }, [query]);
 

@@ -49,6 +49,15 @@ export interface SaaSProductItem {
   seoDescription: string;
 }
 
+export interface GeoMetrics {
+  directAnswerScore: number;
+  dataDensityScore: number;
+  entityClarityScore: number;
+  schemaReadinessScore: number;
+  overallGeoScore: number;
+  aiTargets: ('Perplexity' | 'ChatGPT Search' | 'Google AI Overviews' | 'Claude' | 'Gemini')[];
+}
+
 export interface InsightArticle {
   id: string;
   title: string;
@@ -60,7 +69,7 @@ export interface InsightArticle {
   };
   publicationDate: string;
   updatedDate: string;
-  category: 'AI Agents' | 'AI as a Service' | 'Enterprise RAG' | 'Automation' | 'AI Strategy' | 'MLOps / LLMOps' | 'Governance';
+  category: 'AI Agents' | 'AI as a Service' | 'Enterprise RAG' | 'Automation' | 'AI Strategy' | 'MLOps / LLMOps' | 'Governance' | 'Generative Engine Optimization (GEO)';
   tags: string[];
   buyerStage: 'Learn' | 'Evaluate' | 'Compare' | 'Implement';
   readTime: string;
@@ -68,6 +77,14 @@ export interface InsightArticle {
   relatedSolutions: { title: string; href: string }[];
   seoTitle: string;
   seoDescription: string;
+  status?: 'Published' | 'Draft' | 'In Review' | 'GEO Optimizing';
+  directAnswerSnippet?: string;
+  keyTakeaways?: string[];
+  targetKeywords?: string[];
+  targetEntities?: string[];
+  faqItems?: { question: string; answer: string }[];
+  geoMetrics?: GeoMetrics;
+  seoScore?: number;
 }
 
 export interface JobPosting {

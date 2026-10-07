@@ -264,6 +264,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   CRM Internal View
                 </button>
               </li>
+              <li>
+                <button onClick={() => onNavigate('/cms')} className="hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer text-slate-400 dark:text-slate-500">
+                  GEO & SEO Studio (CMS)
+                </button>
+              </li>
             </ul>
           </div>
         </div>

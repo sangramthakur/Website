@@ -31,7 +31,9 @@ export const AdaptiveLeadModal: React.FC<AdaptiveLeadModalProps> = ({
       setStep('form');
       setBookingBooked(false);
       // Pre-set interest based on source
-      if (ctaSource.toLowerCase().includes('demo')) {
+      if (ctaSource.toLowerCase().includes('investor')) {
+        setFormData((prev) => ({ ...prev, interest: 'Investor Relations' }));
+      } else if (ctaSource.toLowerCase().includes('demo')) {
         setFormData((prev) => ({ ...prev, interest: 'SaaS Products' }));
       } else if (ctaSource.toLowerCase().includes('consultation')) {
         setFormData((prev) => ({ ...prev, interest: 'Consulting' }));
@@ -55,6 +57,12 @@ export const AdaptiveLeadModal: React.FC<AdaptiveLeadModalProps> = ({
 
   const getAdaptiveFieldLabel = () => {
     const s = ctaSource.toLowerCase();
+    if (s.includes('investor')) {
+      return {
+        label: 'Investment Firm / Entity & Areas of Interest:',
+        placeholder: 'e.g. Venture Fund, Angel Syndicate, or Strategic Partner focus',
+      };
+    }
     if (s.includes('demo')) {
       return {
         label: 'Which product or workflow use case are you interested in demonstrating?',
@@ -107,10 +115,16 @@ export const AdaptiveLeadModal: React.FC<AdaptiveLeadModalProps> = ({
         <div className="p-6 sm:p-7 border-b border-slate-100 dark:border-slate-800 flex items-start justify-between">
           <div>
             <div className="text-[11px] font-mono text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">
-              Direct Engineering Engagement · {ctaSource}
+              {ctaSource.toLowerCase().includes('investor')
+                ? 'Investor Relations & Capital Inquiries'
+                : `Direct Engineering Engagement · ${ctaSource}`}
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-              {step === 'form' ? 'Talk to an AI Systems Expert' : 'Inquiry Received'}
+              {step === 'form'
+                ? ctaSource.toLowerCase().includes('investor')
+                  ? 'Request Investor Deck & Executive Briefing'
+                  : 'Talk to an AI Systems Expert'
+                : 'Inquiry Received'}
             </h2>
           </div>
           <button
@@ -233,13 +247,19 @@ export const AdaptiveLeadModal: React.FC<AdaptiveLeadModalProps> = ({
                 type="submit"
                 className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-md transition-colors"
               >
-                <span>Submit & Connect with an AI Systems Architect</span>
+                <span>
+                  {ctaSource.toLowerCase().includes('investor')
+                    ? 'Request Confidential Deck & Data Room Access'
+                    : 'Submit & Connect with an AI Systems Architect'}
+                </span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
             <div className="text-[11px] font-mono text-center text-slate-400 dark:text-slate-500">
-              No sales spam. Discussions are conducted by systems architects bound by confidentiality.
+              {ctaSource.toLowerCase().includes('investor')
+                ? 'Institutional confidentiality preserved. All discussions conducted directly with founding leadership.'
+                : 'No sales spam. Discussions are conducted by systems architects bound by confidentiality.'}
             </div>
           </form>
         ) : (
@@ -251,10 +271,14 @@ export const AdaptiveLeadModal: React.FC<AdaptiveLeadModalProps> = ({
               </div>
               <div className="space-y-1">
                 <div className="text-sm font-bold text-emerald-900 dark:text-emerald-200">
-                  Inquiry logged in secure CRM pipeline
+                  {ctaSource.toLowerCase().includes('investor')
+                    ? 'Investor Briefing Dispatched to Founding Team'
+                    : 'Inquiry logged in secure CRM pipeline'}
                 </div>
                 <p className="text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed">
-                  Thank you, {formData.name}. A technical lead from our Solutions Group has been assigned to review your requirements for {formData.company}.
+                  {ctaSource.toLowerCase().includes('investor')
+                    ? `Thank you, ${formData.name}. Our executive founders have received your note for ${formData.company}. Confidential materials and data room access will be shared with ${formData.email} following verification.`
+                    : `Thank you, ${formData.name}. A technical lead from our Solutions Group has been assigned to review your requirements for ${formData.company}.`}
                 </p>
               </div>
             </div>
@@ -263,10 +287,16 @@ export const AdaptiveLeadModal: React.FC<AdaptiveLeadModalProps> = ({
             <div className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 space-y-3">
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-900 dark:text-white">
                 <Calendar className="w-4 h-4 text-blue-600" />
-                <span>Need immediate architectural alignment?</span>
+                <span>
+                  {ctaSource.toLowerCase().includes('investor')
+                    ? 'Schedule a Direct Founder & Partner Briefing'
+                    : 'Need immediate architectural alignment?'}
+                </span>
               </div>
               <p className="text-xs text-slate-600 dark:text-slate-400">
-                Select a 30-minute technical discovery window with our distributed systems engineering team.
+                {ctaSource.toLowerCase().includes('investor')
+                  ? 'Select a 20-minute executive briefing window directly on the founders calendar.'
+                  : 'Select a 30-minute technical discovery window with our distributed systems engineering team.'}
               </p>
 
               {bookingBooked ? (
@@ -279,7 +309,11 @@ export const AdaptiveLeadModal: React.FC<AdaptiveLeadModalProps> = ({
                   onClick={() => setBookingBooked(true)}
                   className="px-4 py-2.5 bg-slate-900 dark:bg-white hover:bg-blue-600 dark:hover:bg-blue-500 text-white dark:text-slate-900 dark:hover:text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer flex items-center gap-2"
                 >
-                  <span>Book Architecture Discovery Session</span>
+                  <span>
+                    {ctaSource.toLowerCase().includes('investor')
+                      ? 'Book 20-Min Executive Briefing'
+                      : 'Book Architecture Discovery Session'}
+                  </span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               )}

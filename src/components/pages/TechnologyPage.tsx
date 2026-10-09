@@ -1,8 +1,26 @@
 import React from 'react';
-import { Shield, Lock, Server, Cpu, Database, FileCheck, CheckCircle2, AlertCircle, ArrowRight, Layers } from 'lucide-react';
+import {
+  Shield,
+  Lock,
+  Server,
+  Cpu,
+  Database,
+  FileCheck,
+  CheckCircle2,
+  AlertCircle,
+  ArrowRight,
+  Layers,
+  ExternalLink,
+  Radio,
+  Check,
+  Sparkles,
+  Zap,
+} from 'lucide-react';
 import { cmsDataService } from '../../services/cmsDataService';
 import { SeoHead } from '../common/SeoHead';
 import { Breadcrumbs } from '../common/Breadcrumbs';
+import { trackScrabytExternalClick } from '../../services/analytics';
+import { soundEngine } from '../../services/soundEngine';
 
 interface TechnologyPageProps {
   onNavigate: (href: string) => void;
@@ -187,6 +205,129 @@ export const TechnologyPage: React.FC<TechnologyPageProps> = ({ onNavigate, onOp
           </p>
         </div>
       </div>
+
+      {/* Live Sovereign Product Showcase (At the bottom of Platform) */}
+      <section className="relative overflow-hidden rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 p-6 sm:p-10 lg:p-12 text-white shadow-2xl shadow-blue-950/40">
+        {/* Glow ambient background */}
+        <div
+          className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl pointer-events-none"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute -left-20 -bottom-20 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none"
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 space-y-8">
+          {/* Top Banner Row */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-white/10 pb-6">
+            <div className="space-y-3 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>LIVE PRODUCT IN PRODUCTION</span>
+                <span className="text-white/40">·</span>
+                <span className="text-white/80">Ambient Clinical OS</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-white leading-tight">
+                Experience the Platform Live: <span className="font-serif italic font-normal text-blue-300">Scrabyt</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                Witness our sovereign AI runtime handling real clinical consultations in real time. Built with zero customer data retention, sub-340ms latency, and automated FHIR EHR synchronization.
+              </p>
+            </div>
+
+            {/* Direct Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+              <a
+                href="https://www.scrabyt.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  soundEngine.playClick();
+                  trackScrabytExternalClick('/technology', 'PlatformBottom_LiveProductLink');
+                }}
+                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs tracking-wide shadow-lg shadow-blue-600/30 hover:shadow-blue-500/40 transition-all cursor-pointer group"
+              >
+                <span>Launch Live Product (Scrabyt.com)</span>
+                <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+
+              <button
+                onClick={() => {
+                  soundEngine.playClick();
+                  onNavigate('/solutions/ai-as-a-service/scrabyt');
+                }}
+                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-medium text-xs transition-colors cursor-pointer"
+              >
+                <span>Architecture Deep Dive</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Live Telemetry Guarantees */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+              <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Production SLA</div>
+              <div className="text-lg sm:text-xl font-bold text-white font-mono">99.98%</div>
+              <div className="text-[11px] text-emerald-400 flex items-center gap-1">
+                <Check className="w-3 h-3" /> Continuous Active
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+              <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Inference P95</div>
+              <div className="text-lg sm:text-xl font-bold text-white font-mono">&lt; 340ms</div>
+              <div className="text-[11px] text-cyan-400">Semantic Warmth Cache</div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+              <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Data Retention</div>
+              <div className="text-lg sm:text-xl font-bold text-white font-mono">0.00%</div>
+              <div className="text-[11px] text-indigo-300">Stateless Secure Enclave</div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1">
+              <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Compliance Validated</div>
+              <div className="text-lg sm:text-xl font-bold text-white font-mono">HIPAA & GDPR</div>
+              <div className="text-[11px] text-blue-300">Cryptographic Audit Trail</div>
+            </div>
+          </div>
+
+          {/* Interactive Live URL Strip */}
+          <div className="p-4 rounded-2xl bg-blue-900/30 border border-blue-500/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2.5">
+              <Radio className="w-4 h-4 text-emerald-400 animate-pulse shrink-0" />
+              <span className="text-slate-300">
+                Official Live Product URL:{' '}
+                <a
+                  href="https://www.scrabyt.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackScrabytExternalClick('/technology', 'PlatformBottom_LiveUrlLink')}
+                  className="font-mono text-white font-semibold underline underline-offset-2 hover:text-blue-300 transition-colors"
+                >
+                  https://www.scrabyt.com/
+                </a>
+              </span>
+            </div>
+            <div className="flex items-center gap-4 text-slate-400 text-xs">
+              <button
+                onClick={() => onNavigate('/products')}
+                className="hover:text-white transition-colors cursor-pointer font-medium"
+              >
+                All SaaS Products →
+              </button>
+              <button
+                onClick={() => onOpenLeadModal('Live Product Sandbox Access')}
+                className="hover:text-blue-300 transition-colors cursor-pointer font-medium"
+              >
+                Request Enterprise Access →
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* CTA */}
       <div className="p-8 rounded-3xl bg-slate-950 text-white text-center space-y-4">

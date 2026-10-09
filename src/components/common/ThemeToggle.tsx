@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
+import { soundEngine } from '../../services/soundEngine';
 
 export const ThemeToggle: React.FC = () => {
   const [isDark, setIsDark] = useState<boolean>(() => {
@@ -32,6 +33,7 @@ export const ThemeToggle: React.FC = () => {
   }, []);
 
   const toggleTheme = () => {
+    soundEngine.playClick();
     const nextDark = !isDark;
     setIsDark(nextDark);
     if (nextDark) {

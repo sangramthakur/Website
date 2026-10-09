@@ -121,6 +121,34 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate, onOpenLe
           </div>
         ))}
       </div>
+
+      {/* Live Product in Production Banner */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-900 via-slate-900 to-indigo-950 text-white border border-blue-500/30 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-medium border border-emerald-500/30">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>LIVE FLAGSHIP PRODUCT IN PRODUCTION</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold">
+            Scrabyt — Sovereign Clinical Intelligence OS
+          </h3>
+          <p className="text-xs text-slate-300 max-w-xl">
+            Live clinical transcription, SOAP documentation, ICD-10 coding, and EHR sync in active healthcare production.
+          </p>
+        </div>
+        <div className="flex items-center gap-3 shrink-0">
+          <a
+            href="https://www.scrabyt.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackScrabytExternalClick('/products', 'ProductsBottom_LiveLink')}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-xl shadow-md transition-colors flex items-center gap-2 cursor-pointer"
+          >
+            <span>Launch Live Product (Scrabyt.com)</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

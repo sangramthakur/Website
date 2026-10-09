@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, ChevronDown, Cpu, Network, Box, Wrench, CheckCircle2, ExternalLink, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronDown, Cpu, Network, Box, Wrench, CheckCircle2, ExternalLink, Sparkles, Radio } from 'lucide-react';
 import { COMMERCIAL_PILLARS } from '../../data/pillars';
 import { PillarId } from '../../types';
 import { trackScrabytExternalClick, trackEvent } from '../../services/analytics';
@@ -37,17 +37,25 @@ export const PillarsSection: React.FC<PillarsSectionProps> = ({ onNavigate, onOp
   };
 
   return (
-    <section id="commercial-pillars" className="py-20 sm:py-28 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="commercial-pillars" className="py-20 sm:py-28 relative bg-transparent">
+      {/* Soothing background radial glow */}
+      <div
+        className="absolute top-1/2 right-1/4 w-[600px] h-[400px] bg-gradient-to-bl from-indigo-500/5 via-blue-500/5 to-transparent rounded-full blur-[110px] pointer-events-none"
+        aria-hidden="true"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="max-w-3xl mb-14 sm:mb-16">
-          <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2">
-            The Commercial Foundation
+          <div className="flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-slate-500 dark:text-slate-400 mb-3">
+            <span>Commercial Pillars</span>
+            <span aria-hidden="true" className="text-slate-300 dark:text-slate-700">·</span>
+            <span>Production Foundation</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white leading-tight">
-            Four pillars engineered for production impact.
+          <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-slate-900 dark:text-white leading-tight">
+            Four pillars engineered for <span className="font-serif italic font-normal bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-950 dark:from-white dark:via-slate-200 dark:to-blue-200 bg-clip-text text-transparent">production impact.</span>
           </h2>
-          <p className="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-400">
+          <p className="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-400 font-normal">
             From managed infrastructure and autonomous agent swarms to data-driven SaaS applications and technical advisory.
           </p>
         </div>
@@ -61,10 +69,10 @@ export const PillarsSection: React.FC<PillarsSectionProps> = ({ onNavigate, onOp
               <div
                 key={pillar.id}
                 onMouseEnter={() => setActiveDesktopPillar(pillar.id)}
-                className={`relative flex flex-col justify-between p-7 rounded-2xl border transition-all duration-300 ${
+                className={`relative flex flex-col justify-between p-7 rounded-2xl border transition-all duration-300 backdrop-blur-md ${
                   isHovered
-                    ? 'border-blue-500/80 bg-white dark:bg-slate-900 shadow-xl shadow-blue-500/5 -translate-y-1'
-                    : 'border-slate-200/80 dark:border-slate-800 bg-white/60 dark:bg-slate-900/40 hover:border-slate-300 dark:hover:border-slate-700'
+                    ? 'border-blue-300 dark:border-slate-600 bg-white dark:bg-slate-900/90 shadow-xl shadow-blue-500/5'
+                    : 'border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/50 hover:border-slate-300 dark:hover:border-slate-700'
                 }`}
               >
                 <div>
@@ -151,9 +159,9 @@ export const PillarsSection: React.FC<PillarsSectionProps> = ({ onNavigate, onOp
                 <div className="pt-6 mt-4">
                   <button
                     onClick={() => handleCtaClick(pillar)}
-                    className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    className={`w-full py-2.5 px-4 rounded-xl text-xs font-medium flex items-center justify-center gap-2 transition-all cursor-pointer ${
                       isHovered
-                        ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm'
+                        ? 'bg-slate-950 dark:bg-white text-white dark:text-slate-950 shadow-sm'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'
                     }`}
                   >
@@ -265,6 +273,39 @@ export const PillarsSection: React.FC<PillarsSectionProps> = ({ onNavigate, onOp
               </div>
             );
           })}
+        </div>
+
+        {/* Live Product in Production Strip */}
+        <div className="mt-12 p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-3">
+            <span className="flex h-2.5 w-2.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <div className="text-slate-700 dark:text-slate-300">
+              <span className="font-semibold text-slate-900 dark:text-white">Live Platform Product: </span>
+              <span className="font-medium text-blue-600 dark:text-blue-400">Scrabyt Clinical OS</span>
+              <span className="hidden md:inline text-slate-500 dark:text-slate-400"> — Ambient intelligence deployed across clinical EHR systems.</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <a
+              href="https://www.scrabyt.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackScrabytExternalClick('/', 'Pillars_Bottom_LiveLink')}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs shadow-xs transition-colors cursor-pointer"
+            >
+              <span>Launch Live Product</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            <button
+              onClick={() => onNavigate('/products')}
+              className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium cursor-pointer"
+            >
+              All Products →
+            </button>
+          </div>
         </div>
       </div>
     </section>

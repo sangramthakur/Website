@@ -5,13 +5,10 @@ export interface NavItem {
 }
 
 export const MAIN_NAV_ITEMS: NavItem[] = [
-  { label: 'Solutions', href: '/solutions', hasMegaMenu: true },
-  { label: 'AI Agents', href: '/solutions/ai-agents' },
-  { label: 'AI as a Service', href: '/solutions/ai-as-a-service' },
-  { label: 'SaaS', href: '/solutions/saas' },
-  { label: 'Consulting', href: '/solutions/consulting' },
-  { label: 'Insights', href: '/insights', hasMegaMenu: true },
-  { label: 'Company', href: '/company', hasMegaMenu: true },
+  { label: 'Platform', href: '/technology' },
+  { label: 'Products', href: '/products' },
+  { label: 'Investors', href: '/investors' },
+  { label: 'Company', href: '/company' },
 ];
 
 export const MEGA_MENU_SOLUTIONS = {

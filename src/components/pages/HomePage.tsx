@@ -1,9 +1,9 @@
 import React from 'react';
 import { SeoHead } from '../common/SeoHead';
-import { LaunchAnnouncementBanner } from '../common/LaunchAnnouncementBanner';
 import { Hero } from '../home/Hero';
+import { InvestmentThesisSection } from '../home/InvestmentThesisSection';
 import { FlagshipProductBento } from '../home/FlagshipProductBento';
-import { ArchitecturalSpecsSection } from '../home/ArchitecturalSpecsSection';
+import { EnterpriseTractionSection } from '../home/EnterpriseTractionSection';
 import { PillarsSection } from '../home/PillarsSection';
 import { FinalCTASection } from '../home/FinalCTASection';
 
@@ -21,17 +21,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenLeadModal 
         canonicalPath="/"
       />
 
-      {/* Top Launch Announcement Ribbon */}
-      <LaunchAnnouncementBanner />
-
       {/* Hero: Sovereign Intelligence Engine & Centerpiece Product Video Theater (Priority #1) */}
       <Hero onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
 
-      {/* Flagship Product Portfolio (Apple-Style Bento Showcase) */}
+      {/* Flagship Product Portfolio (Apple-Style Bento Showcase - Brought directly to the top after the video) */}
       <FlagshipProductBento onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
 
-      {/* Engineered Without Compromise (Eternal / Apple Typographic Specs) */}
-      <ArchitecturalSpecsSection onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
+      {/* Market Shift & Investment Thesis Bridge */}
+      <InvestmentThesisSection onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
+
+      {/* Market Scalability & Enterprise Traction Validation */}
+      <EnterpriseTractionSection onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />
 
       {/* The Four Commercial Pillars */}
       <PillarsSection onNavigate={onNavigate} onOpenLeadModal={onOpenLeadModal} />

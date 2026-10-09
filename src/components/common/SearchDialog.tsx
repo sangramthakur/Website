@@ -8,6 +8,7 @@ import { INSIGHT_ARTICLES } from '../../data/articles';
 import { COMPARISONS } from '../../data/comparisons';
 import { FAQ_ITEMS } from '../../data/faq';
 import { AIAAS_OFFERINGS } from '../../data/aiAsAService';
+import { soundEngine } from '../../services/soundEngine';
 
 interface SearchDialogProps {
   isOpen: boolean;
@@ -201,6 +202,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ isOpen, onClose, onN
   if (!isOpen) return null;
 
   const handleSelect = (href: string) => {
+    soundEngine.playClick();
     onNavigate(href);
     onClose();
   };

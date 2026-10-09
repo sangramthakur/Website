@@ -4,7 +4,11 @@ import { Footer } from './components/common/Footer';
 import { SearchDialog } from './components/common/SearchDialog';
 import { CookieConsent } from './components/common/CookieConsent';
 import { AdaptiveLeadModal } from './components/forms/AdaptiveLeadModal';
-import { LeadChatbot } from './components/forms/LeadChatbot';
+import { AmbientBackground } from './components/common/AmbientBackground';
+import { ScrollProgressIndicator } from './components/common/ScrollProgressIndicator';
+import { JuryInspectorModal } from './components/common/JuryInspectorModal';
+import { LaunchAnnouncementBanner } from './components/common/LaunchAnnouncementBanner';
+import { soundEngine } from './services/soundEngine';
 
 // Page components
 import { HomePage } from './components/pages/HomePage';
@@ -30,10 +34,63 @@ import { CsmPortal } from './components/cms/CsmPortal';
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>('/');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isJuryModalOpen, setIsJuryModalOpen] = useState(false);
   const [leadModalState, setLeadModalState] = useState<{ isOpen: boolean; source: string }>({
     isOpen: false,
     source: 'General',
   });
+
+  // Global Keyboard Shortcuts for Award-Winning Experience
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      const activeElement = document.activeElement;
+      const isInput =
+        activeElement &&
+        (activeElement.tagName === 'INPUT' ||
+          activeElement.tagName === 'TEXTAREA' ||
+          (activeElement as HTMLElement).isContentEditable);
+
+      // Cmd+K / Ctrl+K: Global Search
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        soundEngine.playClick();
+        setIsSearchOpen((prev) => !prev);
+        return;
+      }
+
+      // If user is actively typing in an input, don't trigger single-key hotkeys
+      if (isInput) return;
+
+      // ? or Shift+/: Toggle Jury Inspector
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        e.preventDefault();
+        soundEngine.playClick();
+        setIsJuryModalOpen((prev) => !prev);
+      }
+
+      // M: Toggle Sound
+      if (e.key.toLowerCase() === 'm' && !e.metaKey && !e.ctrlKey) {
+        soundEngine.toggle();
+      }
+
+      // T: Toggle Theme
+      if (e.key.toLowerCase() === 't' && !e.metaKey && !e.ctrlKey) {
+        const isDark = document.documentElement.classList.contains('dark');
+        if (isDark) {
+          document.documentElement.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        } else {
+          document.documentElement.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        }
+        soundEngine.playClick();
+        window.dispatchEvent(new Event('themechange'));
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
 
   // Sync with browser navigation
   useEffect(() => {
@@ -99,8 +156,8 @@ export default function App() {
       return <ProductsPage onNavigate={navigate} onOpenLeadModal={handleOpenLeadModal} />;
     }
 
-    // Technology / Architecture / Security / Governance
-    if (currentPath.startsWith('/technology')) {
+    // Technology / Platform / Architecture / Security / Governance
+    if (currentPath.startsWith('/technology') || currentPath === '/platform' || currentPath.startsWith('/platform')) {
       return <TechnologyPage onNavigate={navigate} onOpenLeadModal={handleOpenLeadModal} />;
     }
 
@@ -189,17 +246,27 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 selection:bg-blue-600 selection:text-white">
+    <div className="relative min-h-screen flex flex-col bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 selection:bg-blue-600 selection:text-white">
+      {/* Ambient dynamic cursor torch & delicate grid layer */}
+      <AmbientBackground />
+
+      {/* Global Scroll Progress & Awards Dock */}
+      <ScrollProgressIndicator onOpenJuryModal={() => setIsJuryModalOpen(true)} />
+
+      {/* Top Thin Banner: New Product Launch with Scrabyt Link */}
+      <LaunchAnnouncementBanner onNavigate={navigate} />
+
       {/* Global Header */}
       <Header
         currentPath={currentPath}
         onNavigate={navigate}
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenLeadModal={handleOpenLeadModal}
+        onOpenJuryModal={() => setIsJuryModalOpen(true)}
       />
 
       {/* Main View Area */}
-      <main className="flex-1 pt-16">
+      <main className="relative z-10 flex-1 pt-16">
         {renderCurrentView()}
       </main>
 
@@ -213,14 +280,17 @@ export default function App() {
         onNavigate={navigate}
       />
 
+      <JuryInspectorModal
+        isOpen={isJuryModalOpen}
+        onClose={() => setIsJuryModalOpen(false)}
+        onNavigate={navigate}
+      />
+
       <AdaptiveLeadModal
         isOpen={leadModalState.isOpen}
         ctaSource={leadModalState.source}
         onClose={handleCloseLeadModal}
       />
-
-      {/* Floating Lead Chatbot Navigator */}
-      <LeadChatbot />
 
       {/* Region-Aware Cookie Consent Banner */}
       <CookieConsent />

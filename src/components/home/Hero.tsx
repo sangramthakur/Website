@@ -22,24 +22,24 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenLeadModal }) => {
   };
 
   return (
-    <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 overflow-hidden border-b border-slate-100 dark:border-slate-800/60 bg-gradient-to-b from-transparent via-slate-50/40 to-transparent dark:via-slate-900/30">
+    <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 overflow-hidden border-b border-slate-100 dark:border-slate-800/60 bg-gradient-to-b from-transparent via-slate-50/50 to-transparent dark:via-slate-900/40">
       {/* Soothing Ethereal Ambient Atmosphere */}
       <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[550px] bg-gradient-to-tr from-blue-400/15 via-indigo-400/10 to-teal-400/10 rounded-full blur-[130px] pointer-events-none -z-10 animate-soothing-pulse"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-gradient-to-tr from-blue-400/20 via-teal-400/15 to-indigo-400/15 rounded-full blur-[140px] pointer-events-none -z-10 animate-elegant-aurora"
         aria-hidden="true"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Centered Editorial Header (Posh premium typography) */}
         <div className="text-center max-w-4xl mx-auto space-y-7 mb-12 sm:mb-16">
-          {/* Refined eye-catching frosted status pill */}
+          {/* Refined eye-catching frosted status indicator - quiet editorial format */}
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/[0.03] dark:bg-white/[0.05] border border-slate-900/[0.07] dark:border-white/10 backdrop-blur-md shadow-xs text-xs font-medium tracking-wide text-slate-700 dark:text-slate-300">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>Sovereign Architecture</span>
             <span aria-hidden="true" className="text-slate-300 dark:text-slate-600">·</span>
             <span>Regulated Enterprise</span>
             <span aria-hidden="true" className="text-slate-300 dark:text-slate-600">·</span>
-            <span>Clinical Grade</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Clinical Grade</span>
           </div>
 
           {/* Grand Posh Headline with eye-pleasing depth - Click to launch full screen video walkthrough */}
@@ -55,10 +55,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenLeadModal }) => {
                 }
               }}
               title="Click to launch full-screen architecture video walkthrough"
-              className="text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight text-slate-950 dark:text-white leading-[1.08] cursor-pointer transition-transform duration-300 group-hover:scale-[1.008] active:scale-[0.99] select-none"
+              className="text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight text-slate-950 dark:text-white leading-[1.08] cursor-pointer transition-all duration-300 group-hover:scale-[1.008] active:scale-[0.99] select-none"
             >
               Enterprise AI systems. <br className="hidden sm:inline" />
-              <span className="font-serif italic font-normal bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-950 dark:from-white dark:via-slate-200 dark:to-blue-200 bg-clip-text text-transparent group-hover:opacity-90">
+              <span className="font-serif italic font-normal bg-gradient-to-r from-slate-900 via-blue-900 to-teal-900 dark:from-white dark:via-slate-100 dark:to-teal-200 bg-clip-text text-transparent group-hover:opacity-95">
                 Built for sovereign scale.
               </span>
             </h1>
@@ -68,7 +68,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenLeadModal }) => {
             </div>
           </div>
 
-          {/* Minimalist Subtext */}
+          {/* Minimalist Subtext with comfortable measure */}
           <p className="text-base sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
             We build and operate mission-critical autonomous agents and specialized vertical AI products on zero-retention private infrastructure.
           </p>
@@ -78,7 +78,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenLeadModal }) => {
             <button
               type="button"
               onClick={() => onOpenLeadModal('Hero Investor CTA')}
-              className="relative group overflow-hidden w-full sm:w-auto px-7 py-3.5 bg-slate-950 hover:bg-slate-900 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 font-medium text-sm rounded-xl transition-all shadow-sm hover:shadow-md hover:shadow-blue-500/10 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+              className="relative group overflow-hidden w-full sm:w-auto px-7 py-3.5 bg-slate-950 hover:bg-slate-900 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 font-medium text-sm rounded-xl transition-all shadow-md hover:shadow-xl hover:shadow-blue-500/10 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
             >
               <span>Schedule Investor & Architecture Briefing</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -87,9 +87,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenLeadModal }) => {
             <button
               type="button"
               onClick={handleWatchFilmClick}
-              className="w-full sm:w-auto px-6 py-3.5 bg-white/70 hover:bg-white dark:bg-slate-900/80 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200 font-medium text-sm rounded-xl border border-slate-200/90 dark:border-slate-800 backdrop-blur-md transition-all shadow-xs hover:border-slate-300 dark:hover:border-slate-700 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+              className="w-full sm:w-auto px-6 py-3.5 bg-white/80 hover:bg-white dark:bg-slate-900/80 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200 font-medium text-sm rounded-xl border border-slate-200/90 dark:border-slate-800 backdrop-blur-md transition-all shadow-xs hover:border-slate-300 dark:hover:border-slate-700 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] group"
             >
-              <Play className="w-3.5 h-3.5 fill-current opacity-70" />
+              <Play className="w-3.5 h-3.5 fill-current opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all text-blue-600 dark:text-blue-400" />
               <span>Watch Architecture Walkthrough</span>
             </button>
           </div>

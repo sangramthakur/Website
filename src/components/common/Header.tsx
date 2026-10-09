@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Menu, X, ArrowRight, Award } from 'lucide-react';
+import { Search, Menu, X, ArrowRight, Award, ExternalLink } from 'lucide-react';
 import { MAIN_NAV_ITEMS } from '../../data/navigation';
 import { ThemeToggle } from './ThemeToggle';
 import { soundEngine } from '../../services/soundEngine';
+import { LaunchAnnouncementBanner } from './LaunchAnnouncementBanner';
+import { trackScrabytExternalClick } from '../../services/analytics';
 
 interface HeaderProps {
   currentPath: string;
@@ -46,8 +48,8 @@ export const Header: React.FC<HeaderProps> = ({
         ref={navContainerRef}
         className={`pointer-events-auto mx-auto max-w-7xl transition-all duration-300 rounded-2xl ${
           isScrolled
-            ? 'bg-white/90 dark:bg-slate-900/90 shadow-lg shadow-slate-900/5 dark:shadow-black/20 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-md py-2.5 px-4 sm:px-5'
-            : 'bg-white/70 dark:bg-slate-950/70 border border-slate-200/50 dark:border-slate-800/40 backdrop-blur-sm py-3.5 px-4 sm:px-6'
+            ? 'bg-white/85 dark:bg-slate-900/85 shadow-lg shadow-slate-900/5 dark:shadow-black/25 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl py-2.5 px-4 sm:px-5'
+            : 'bg-white/70 dark:bg-slate-950/70 border border-slate-200/60 dark:border-white/[0.08] backdrop-blur-md py-3 px-4 sm:px-6 shadow-xs'
         }`}
       >
         <div className="flex items-center justify-between gap-4">
@@ -70,9 +72,13 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="font-medium text-sm tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5 transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">
                 <span>Enterprise AI Platform</span>
               </div>
-              <div className="text-[10px] text-slate-500 dark:text-slate-400 tracking-wider uppercase leading-none font-normal flex items-center gap-1">
+              <div className="text-[10px] text-slate-500 dark:text-slate-400 tracking-wider uppercase leading-none font-normal flex items-center gap-1.5">
                 <span>Sovereign Systems</span>
                 <span className="text-[9px] text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity font-mono">· Home</span>
+                <span className="hidden md:inline-flex items-center gap-1 text-[9px] text-emerald-600 dark:text-emerald-400 font-mono font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  New Launch Below
+                </span>
               </div>
             </div>
           </button>
@@ -155,6 +161,11 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
+      {/* New Product Launch: Positioned directly at the bottom of the homebutton */}
+      <div className="pointer-events-auto mx-auto max-w-7xl pt-2 px-1 flex items-center justify-start">
+        <LaunchAnnouncementBanner onNavigate={onNavigate} />
+      </div>
+
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="pointer-events-auto lg:hidden fixed inset-x-3 top-20 max-h-[85vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-5 z-50 space-y-4 animate-in fade-in zoom-in-95 duration-150">
@@ -180,6 +191,41 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
               <ArrowRight className="w-4 h-4 text-slate-400" />
             </button>
+
+            {/* Scrabyt New Product Launch Card directly under Home in Mobile Menu */}
+            <div className="p-3 my-2 rounded-xl bg-slate-950 dark:bg-black text-white border border-emerald-500/35 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full font-mono font-semibold bg-emerald-500/20 text-emerald-300 text-[10px] uppercase">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  New Product Launch
+                </span>
+                <span className="text-[10px] text-slate-400 font-mono">Scrabyt Live</span>
+              </div>
+              <p className="text-xs text-slate-300">
+                Ambient Sovereign Clinical Intelligence OS is live.
+              </p>
+              <div className="flex items-center gap-2 pt-1">
+                <a
+                  href="https://www.scrabyt.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackScrabytExternalClick('mobile_menu', 'launch_card')}
+                  className="flex-1 py-1.5 px-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs text-center flex items-center justify-center gap-1 cursor-pointer transition-colors"
+                >
+                  <span>Explore Live</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onNavigate('/ai-as-a-service/scrabyt');
+                  }}
+                  className="px-2.5 py-1.5 rounded-lg border border-white/20 hover:border-white/40 text-xs text-slate-300 hover:text-white transition-colors"
+                >
+                  Specs
+                </button>
+              </div>
+            </div>
             {MAIN_NAV_ITEMS.map((item) => (
               <button
                 key={item.label}

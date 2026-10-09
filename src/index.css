@@ -59,11 +59,11 @@
 
 @keyframes soothing-pulse {
   0%, 100% {
-    opacity: 0.4;
+    opacity: 0.45;
     transform: scale(1);
   }
   50% {
-    opacity: 0.65;
+    opacity: 0.75;
     transform: scale(1.03);
   }
 }
@@ -77,6 +77,26 @@
   }
 }
 
+@keyframes elegant-aurora {
+  0%, 100% {
+    opacity: 0.5;
+    filter: blur(110px) hue-rotate(0deg);
+  }
+  50% {
+    opacity: 0.75;
+    filter: blur(130px) hue-rotate(18deg);
+  }
+}
+
+@keyframes subtle-glow {
+  0%, 100% {
+    box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 40px -5px rgba(16, 185, 129, 0.25);
+  }
+}
+
 .animate-ambient-float {
   animation: ambient-float 18s ease-in-out infinite;
 }
@@ -87,6 +107,27 @@
 
 .animate-soothing-pulse {
   animation: soothing-pulse 8s ease-in-out infinite;
+}
+
+.animate-elegant-aurora {
+  animation: elegant-aurora 14s ease-in-out infinite;
+}
+
+.animate-subtle-glow {
+  animation: subtle-glow 6s ease-in-out infinite;
+}
+
+/* Glassmorphism surfaces with hairline luxury borders */
+.luxury-glass {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark .luxury-glass {
+  background: rgba(10, 15, 30, 0.75);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Custom subtle scrollbar */

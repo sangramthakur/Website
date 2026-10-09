@@ -51,10 +51,10 @@ export const FlagshipProductBento: React.FC<FlagshipProductBentoProps> = ({
         {/* Bento Grid: 1 Large Feature Banner + 3 Complementary Products */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Card 1: Scrabyt Clinical Intelligence (Flagship Highlight, Spans 7 cols) */}
-          <div className="lg:col-span-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 backdrop-blur-md p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden group hover:border-blue-300 dark:hover:border-slate-600 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300">
-            {/* Subtle clinical cyan aura corner accent */}
+          <div className="lg:col-span-7 rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden group hover:border-emerald-300 dark:hover:border-emerald-500/40 hover:shadow-2xl hover:shadow-emerald-500/5 transition-all duration-500">
+            {/* Subtle clinical cyan/emerald aura corner accent */}
             <div
-              className="absolute -top-24 -right-24 w-60 h-60 bg-gradient-to-bl from-teal-400/15 via-blue-400/10 to-transparent rounded-full blur-2xl pointer-events-none group-hover:scale-110 transition-transform duration-700"
+              className="absolute -top-24 -right-24 w-72 h-72 bg-gradient-to-bl from-emerald-400/20 via-teal-400/10 to-transparent rounded-full blur-3xl pointer-events-none group-hover:scale-125 transition-transform duration-700"
               aria-hidden="true"
             />
 

@@ -7,7 +7,6 @@ import { AdaptiveLeadModal } from './components/forms/AdaptiveLeadModal';
 import { AmbientBackground } from './components/common/AmbientBackground';
 import { ScrollProgressIndicator } from './components/common/ScrollProgressIndicator';
 import { JuryInspectorModal } from './components/common/JuryInspectorModal';
-import { LaunchAnnouncementBanner } from './components/common/LaunchAnnouncementBanner';
 import { soundEngine } from './services/soundEngine';
 
 // Page components
@@ -253,10 +252,7 @@ export default function App() {
       {/* Global Scroll Progress & Awards Dock */}
       <ScrollProgressIndicator onOpenJuryModal={() => setIsJuryModalOpen(true)} />
 
-      {/* Top Thin Banner: New Product Launch with Scrabyt Link */}
-      <LaunchAnnouncementBanner onNavigate={navigate} />
-
-      {/* Global Header */}
+      {/* Global Header (includes New Product Launch at bottom of home button) */}
       <Header
         currentPath={currentPath}
         onNavigate={navigate}

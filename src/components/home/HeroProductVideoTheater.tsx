@@ -636,15 +636,16 @@ export const HeroProductVideoTheater: React.FC<HeroProductVideoTheaterProps> = (
         </div>
 
         {/* Live Product Link at the Bottom of Video: Scrabyt Launch Bar */}
-        <div className="border-t border-emerald-500/30 bg-gradient-to-r from-emerald-950/70 via-slate-950 to-emerald-950/50 px-5 py-3 sm:py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div className="border-t border-emerald-500/20 bg-gradient-to-r from-emerald-950/40 via-slate-950 to-emerald-950/30 px-5 sm:px-7 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-3">
-            <span className="relative flex h-2.5 w-2.5">
+            <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <div className="text-slate-300">
-              <span className="font-semibold text-white">Live Product Launch:</span>{' '}
-              <span className="text-emerald-300 font-medium">Scrabyt</span> · Ambient Sovereign Clinical Intelligence OS
+              <span className="font-semibold text-white tracking-tight">Scrabyt Clinical OS</span>
+              <span className="text-slate-500 mx-2" aria-hidden="true">·</span>
+              <span className="text-emerald-300/90 font-normal">Live in Ambient Healthcare Production</span>
             </div>
           </div>
 
@@ -655,7 +656,7 @@ export const HeroProductVideoTheater: React.FC<HeroProductVideoTheaterProps> = (
               rel="noopener noreferrer"
               aria-label="Explore Scrabyt Clinical OS live product — opens in a new tab"
               onClick={handleLaunchScrabyt}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 font-semibold text-xs tracking-tight transition-all hover:text-white cursor-pointer group shadow-xs active:scale-95"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-white dark:bg-white text-slate-950 font-medium text-xs tracking-tight transition-all hover:bg-slate-100 hover:shadow-lg hover:shadow-emerald-500/10 cursor-pointer group active:scale-[0.98]"
             >
               <span>Launch Live Product (Scrabyt.com)</span>
               <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -669,8 +670,8 @@ export const HeroProductVideoTheater: React.FC<HeroProductVideoTheaterProps> = (
                 }}
                 className="hidden md:inline-flex items-center gap-1 text-slate-400 hover:text-white transition-colors cursor-pointer text-xs"
               >
-                <span>View Architecture Specs</span>
-                <ChevronRight className="w-3 h-3" />
+                <span>Architecture Specs</span>
+                <ChevronRight className="w-3 h-3 opacity-60" />
               </button>
             )}
           </div>
